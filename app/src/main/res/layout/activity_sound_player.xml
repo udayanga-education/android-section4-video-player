@@ -32,8 +32,26 @@
             android:onClick="stopAction"
             android:text="Stop" />
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Volume COntroller"
+            android:textSize="15sp" />
+
         <SeekBar
             android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Progress" />
+
+        <SeekBar
+            android:id="@+id/scrubber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

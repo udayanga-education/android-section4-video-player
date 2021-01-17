@@ -10,10 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class SoundPlayer extends AppCompatActivity {
 
     MediaPlayer mediaPlayer;
-    SeekBar volumeController;
+    SeekBar volumeController, scrubber;
     AudioManager audioManager;
 
     @Override
@@ -21,6 +24,7 @@ public class SoundPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_player);
         mediaPlayer = MediaPlayer.create(this, R.raw.sound);
+
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -33,7 +37,6 @@ public class SoundPlayer extends AppCompatActivity {
         volumeController.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Log.i("Volume ", Integer.toString(progress));
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
             }
 
@@ -47,6 +50,36 @@ public class SoundPlayer extends AppCompatActivity {
 
             }
         });
+
+        scrubber = (SeekBar) findViewById(R.id.scrubber);
+        scrubber.setMax(mediaPlayer.getDuration());
+
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                scrubber.setProgress(mediaPlayer.getCurrentPosition());
+            }
+        }, 0, 100);
+
+        scrubber.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                Log.i("Scrubber ", Integer.toString(progress));
+
+                mediaPlayer.seekTo(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
 
     }
 
